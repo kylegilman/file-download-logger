@@ -54,7 +54,7 @@ class File_Download_Logger_Admin {
 
 	}
 
-	public function start_download() {
+	public function start_download( $download_log ) {
 
 		global $post;
 		$user = wp_get_current_user();
@@ -73,15 +73,28 @@ class File_Download_Logger_Admin {
 		if ( $user->ID != 0 && $post ) {
 
 			$download_log = array(
-				'user'   => $user->ID,
-				'time'   => time(),
-				'ip'     => $ip,
-				'action' => 'start'
+				'user'     => $user->ID,
+				'time'     => time(),
+				'ip'       => $ip,
+				'complete' => false
 			);
 
-			add_post_meta($post->ID, '_file_download_log', $download_log, false);
+			$download_id = add_post_meta($post->ID, '_file_download_log', $download_log, false);
 
 		}
+
+		return $download_log;
+
+	}
+
+	public function end_download( $download_log, $complete ) {
+
+		global $post;
+
+		$new_download_log = $download_log;
+		$new_download_log['complete'] = $complete;
+
+		update_post_meta($post->ID, '_file_download_log', $new_download_log, $download_log);
 
 	}
 

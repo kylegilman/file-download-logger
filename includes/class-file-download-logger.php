@@ -69,7 +69,7 @@ class File_Download_Logger {
 	public function __construct() {
 
 		$this->plugin_name = 'file-download-logger';
-		$this->version = '0.1.0';
+		$this->version = '0.1.1';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -150,7 +150,8 @@ class File_Download_Logger {
 
 		$plugin_admin = new File_Download_Logger_Admin( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'kg_file_download_logger_start', $plugin_admin, 'start_download' );
+		$this->loader->add_filter( 'kg_file_download_logger_start', $plugin_admin, 'start_download' );
+		$this->loader->add_action( 'kg_file_download_logger_end', $plugin_admin, 'end_download', 10, 2 );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'create_log_menu' );
 
 	}

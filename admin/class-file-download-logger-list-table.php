@@ -34,6 +34,7 @@ class File_Download_Logger_List_Table extends WP_List_Table {
 	function get_columns() {
 
 		return $columns = array(
+		  'col_complete'=>__('Complete', 'file-download-logger'),
 		  'col_title'=>__('Title', 'file-download-logger'),
 		  'col_thumbnail'=>__('Thumbnail', 'file-download-logger'),
 		  'col_user'=>__('User', 'file-download-logger'),
@@ -164,6 +165,19 @@ class File_Download_Logger_List_Table extends WP_List_Table {
 
 				 //Display the cell
 				 switch ( $column_name ) {
+				 	case "col_complete":
+				 		if ( property_exists($rec, 'complete') ) {
+							if ( $rec->complete ) {
+								echo '<td><span class="dashicons dashicons-yes" style="color:green;"></span></td>';
+							}
+							else {
+								echo '<td><span class="dashicons dashicons-no" style="color:red;"></span></td>';
+							}
+				 		}
+				 		else {
+				 			echo '<td></td>';
+				 		}
+				 		break;
 					case "col_title":
 						$post = get_post($rec->post_id);
 						echo '<td '.$attributes.'><a href="'.get_edit_post_link($rec->post_id).'">'.$post->post_title.'</a></td>';
